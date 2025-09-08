@@ -1,0 +1,28 @@
+name: Build and Push to Local Registry
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted   # 👈 Important: use self-hosted runner on your VM
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      - name: Build JAR
+        run: ./mvnw clean package -DskipTests
+
+      - name: Build and Push Docker image
+        run: |
+          IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+          docker build -t registry.local:5000/orderprocessor:$IMAGE_TAG .
+          docker push registry.local:5000/orderprocessor:$IMAGE_TAG
+          echo "✅ Pushed: registry.local:5000/orderprocessor:$IMAGE_TAG"
