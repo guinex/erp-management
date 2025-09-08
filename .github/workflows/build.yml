@@ -23,7 +23,8 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
+          JAR_FILE=$(ls build/libs/*.jar)
           IMAGE_TAG=$(date +%Y%m%d%H%M%S)
-          docker build -t registry.local:5000/orderprocessor:$IMAGE_TAG .
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+          docker build --build-arg JAR_FILE=$JAR_FILE -t registry.local:5000/orderprocessor:$IMAGE_TAG .
           docker push registry.local:5000/orderprocessor:$IMAGE_TAG
-          echo "✅ Pushed: registry.local:5000/orderprocessor:$IMAGE_TAG"
