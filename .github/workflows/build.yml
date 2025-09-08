@@ -19,7 +19,7 @@ jobs:
           java-version: '17'
 
       - name: Build JAR
-        run: ./mvnw clean package -DskipTests
+        run: ./gradlew clean build -x test
 
       - name: Build and Push Docker image
         run: |
