@@ -19,9 +19,7 @@ jobs:
           java-version: '17'
 
       - name: Build JAR
-        run:
-          chmod +x ./gradlew
-          ./gradlew clean build -x test
+        run: chmod +x ./gradlew && ./gradlew clean build -x test
 
       - name: Build and Push Docker image
         run: |
